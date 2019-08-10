@@ -12,8 +12,8 @@
 
 using namespace std;
 
-int ringNum = 5;
-int sliceNum = 4;
+int ringNum = 3;
+int sliceNum = 3;
 float radius = 1.5;
 bool polygon = false;
 bool showNormals = false;
@@ -77,6 +77,8 @@ void display()
 
 	drawAxisVectors();
 
+	//drawSphere(0, 0, 0, radius, ringNum, sliceNum);
+
 	if (polygon) s.drawPolygon();
 	else s.drawWireframe();
 
@@ -101,7 +103,7 @@ void keyboard(unsigned char key, int x, int y)
 		s = Sphere(0, 0, 0, radius, sliceNum, ringNum);
 		break;
 	case 'r':
-		if (ringNum > 1) ringNum--;
+		if (ringNum > 3) ringNum--;
 		s = Sphere(0, 0, 0, radius, sliceNum, ringNum);
 		break;
 	case 'S':
@@ -109,7 +111,7 @@ void keyboard(unsigned char key, int x, int y)
 		s = Sphere(0, 0, 0, radius, sliceNum, ringNum);
 		break;
 	case 's':
-		if (sliceNum > 1) sliceNum--;
+		if (sliceNum > 3) sliceNum--;
 		s = Sphere(0, 0, 0, radius, sliceNum, ringNum);
 		break;
 	case 'p':

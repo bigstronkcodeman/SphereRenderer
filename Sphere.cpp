@@ -29,8 +29,8 @@ Sphere::Sphere(float x, float y, float z, float r)
 Sphere::Sphere(float x, float y, float z, int numSlices, int numRings)
 {
 	center = Vec3(x, y, z);
-	slices = numSlices;
-	rings = numRings;
+	slices = numSlices > 2 ? numSlices : 3;
+	rings = numRings > 2 ? numRings : 3;
 	radius = 1;
 	initVertices();
 }
@@ -38,8 +38,8 @@ Sphere::Sphere(float x, float y, float z, int numSlices, int numRings)
 Sphere::Sphere(float x, float y, float z, float r, int numSlices, int numRings)
 {
 	center = Vec3(x, y, z);
-	slices = numSlices;
-	rings = numRings;
+	slices = numSlices > 2 ? numSlices : 3;
+	rings = numRings > 2 ? numRings : 3;
 	radius = r;
 	initVertices();
 	initSurfaceNormals();
@@ -220,33 +220,36 @@ void Sphere::initVertexNormals()
 		}
 	}
 
-	for (int i = 2; i < uvMap.size() - 2; i++)
+	if (uvMap.size() > 2)
 	{
-		polewardLeft = surfaceNormals[i - 1].size() - 1;
-		polewardCenter = 0;
-		polewardRight = 1;
-		centerwardLeft = surfaceNormals[i].size() - 2;
-		centerwardMiddle = centerwardLeft + 1;
-		centerwardRight = 0;
-		for (int j = 0; j < uvMap[i].size(); j++)
+		for (int i = 2; i < uvMap.size() - 2; i++)
 		{
-			Vec3 sumVec;
-			for (int k = 0; k < 3; k++)
+			polewardLeft = surfaceNormals[i - 1].size() - 1;
+			polewardCenter = 0;
+			polewardRight = 1;
+			centerwardLeft = surfaceNormals[i].size() - 2;
+			centerwardMiddle = centerwardLeft + 1;
+			centerwardRight = 0;
+			for (int j = 0; j < uvMap[i].size(); j++)
 			{
-				sumVec = sumVec + surfaceNormals[i - 1][(polewardLeft + k) % surfaceNormals[i - 1].size()];
-			}
-			polewardLeft = (polewardLeft + 2) % surfaceNormals[i - 1].size();
-			
-			for (int k = 0; k < 3; k++)
-			{
-				sumVec = sumVec + surfaceNormals[i][(centerwardLeft + k) % surfaceNormals[i].size()];
-			}
-			centerwardLeft = (centerwardLeft + 2) % surfaceNormals[i].size();
+				Vec3 sumVec;
+				for (int k = 0; k < 3; k++)
+				{
+					sumVec = sumVec + surfaceNormals[i - 1][(polewardLeft + k) % surfaceNormals[i - 1].size()];
+				}
+				polewardLeft = (polewardLeft + 2) % surfaceNormals[i - 1].size();
 
-			sumVec.normalize();
-			//sumVec.scale(0.01);
-			sumVec = sumVec + uvMap[i][j];
-			vertexNormals[i].push_back(sumVec);
+				for (int k = 0; k < 3; k++)
+				{
+					sumVec = sumVec + surfaceNormals[i][(centerwardLeft + k) % surfaceNormals[i].size()];
+				}
+				centerwardLeft = (centerwardLeft + 2) % surfaceNormals[i].size();
+
+				sumVec.normalize();
+				//sumVec.scale(0.01);
+				sumVec = sumVec + uvMap[i][j];
+				vertexNormals[i].push_back(sumVec);
+			}
 		}
 	}
 }
@@ -295,7 +298,7 @@ void Sphere::drawWireframe()
 			Vec3 k3 = uvMap[i + 1][j + 1];
 			Vec3 k4 = uvMap[i + 1][j];
 
-			glColor3f(i * outerRatio, 0.375, 1 / (j * innerRatio));
+			glColor3f(0.375, i * outerRatio, 1 / (j * innerRatio));
 
 			glBegin(GL_LINE_LOOP);
 			glVertex3f(k1.x, k1.y, k1.z);
@@ -326,7 +329,7 @@ void Sphere::drawPolygon()
 			Vec3 k3 = uvMap[i + 1][j + 1];
 			Vec3 k4 = uvMap[i + 1][j];
 
-			glColor3f(i * outerRatio, 0.375, 1 / (j * innerRatio));
+			glColor3f(0.375, i * outerRatio, 1 / (j * innerRatio));
 
 			glBegin(GL_POLYGON);
 			glVertex3f(k1.x, k1.y, k1.z);
