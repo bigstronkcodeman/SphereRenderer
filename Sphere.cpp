@@ -403,4 +403,4 @@ void Sphere::operator=(const Sphere& other)
 	{
 		vertexNormals.push_back(other.vertexNormals[i]);
 	}
-}
+} 
