@@ -20,4 +20,4 @@ public:
 	void normalize();
 
 	Vec3 operator+(const Vec3& v);
-};
+}; 
