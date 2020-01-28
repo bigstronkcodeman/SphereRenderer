@@ -52,4 +52,4 @@ Vec3 Vec3::operator+(const Vec3& v)
 	w.y = y + v.y;
 	w.z = z + v.z;
 	return w;
-}
+} 
