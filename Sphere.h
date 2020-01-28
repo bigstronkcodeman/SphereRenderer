@@ -46,4 +46,4 @@ public:
 	void drawVertexNormals();
 
 	void operator=(const Sphere& other);
-};
+}; 
